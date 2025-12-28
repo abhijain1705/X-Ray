@@ -231,6 +231,10 @@ For security concerns, see [SECURITY.md](SECURITY.md).
 - Issues: [GitHub Issues](https://github.com/abhijain1705/x-ray/issues)
 - Discussions: [GitHub Discussions](https://github.com/abhijain1705/x-ray/discussions)
 
+## Maintainer
+
+Abhi Jain (<abhijain1705@gmail.com>)
+
 ---
 
 **Status**: MVP (v0.1). Expect breaking changes. Not production-ready yet.

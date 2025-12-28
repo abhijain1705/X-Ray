@@ -1,5 +1,8 @@
 import { ExecutionOptions, StaticConfig, StepInput } from "./types";
 import { safeJson } from "./util";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 class XRaySDK {
   private config: StaticConfig;

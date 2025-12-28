@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/abhijain1705/X-Ray/issues"
   },
-  "homepage": "https://github.com/abhijain1705/X-Ray#readme"
+  "homepage": "https://github.com/abhijain1705/X-Ray#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  }
 }

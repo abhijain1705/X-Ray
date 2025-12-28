@@ -233,7 +233,12 @@ For security concerns, see [SECURITY.md](SECURITY.md).
 
 ## Maintainer
 
-Abhi Jain (<abhijain1705@gmail.com>)
+<div align="center">
+  <img src="https://avatars.githubusercontent.com/u/137091099?s=400&u=406331207a700c702769b2423b0e5d886a29a335&v=4" alt="Abhi Jain" width="100" style="border-radius: 50%;" />
+  
+  **[Abhi Jain](https://github.com/abhijain1705)**  
+  Email: [abhijain3002@gmail.com](mailto:abhijain3002@gmail.com)
+</div>
 
 ---
 

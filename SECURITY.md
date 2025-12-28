@@ -4,7 +4,7 @@
 
 **Do not open public issues for security vulnerabilities.**
 
-If you discover a security vulnerability, please email [security@example.com](mailto:security@example.com) with:
+If you discover a security vulnerability, please email [abhijain3002@gmail.com](mailto:abhijain3002@gmail.com) with:
 
 - Description of the vulnerability
 - Steps to reproduce (if applicable)
@@ -60,4 +60,4 @@ We will acknowledge your report within 48 hours and provide updates as we work o
 
 ---
 
-This project is in early stages. Security hardening is ongoing. If you have suggestions, please open an issue or email security@example.com.
+This project is in early stages. Security hardening is ongoing. If you have suggestions, please open an issue or email abhijain3002@gmail.com.

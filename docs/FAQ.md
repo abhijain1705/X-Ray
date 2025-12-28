@@ -378,7 +378,7 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ### What if I find a security vulnerability?
 
-Email [security@example.com](mailto:security@example.com). Do not open a public issue.
+Email [abhijain3002@gmail.com](mailto:abhijain3002@gmail.com). Do not open a public issue.
 
 See [SECURITY.md](../SECURITY.md).
 

@@ -153,7 +153,7 @@ Choose a different name:
 
 ```json
 {
-  "name": "@yourusername/xray-sdk"
+  "name": "@abhi1705/xray-sdk"
 }
 ```
 

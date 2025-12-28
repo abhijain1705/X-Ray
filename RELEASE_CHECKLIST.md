@@ -10,7 +10,6 @@
 
 - [ ] Read [README.md](README.md) — sounds professional?
 - [ ] Check all links in documentation work
-- [ ] Verify no placeholder URLs remain (yourusername, example.com, etc.)
 - [ ] Review API examples — do they work?
 - [ ] Test setup guide — can you follow it from scratch?
 - [ ] Check code examples — are they correct?
@@ -58,20 +57,17 @@
 
 ### Content Updates
 
-- [ ] Replace `yourusername` with your actual GitHub username
-
-  - Files: README.md, CONTRIBUTING.md, SECURITY.md, docs/SETUP.md, etc.
-  - Search: `yourusername` → `your-github-username`
+- Files: README.md, CONTRIBUTING.md, SECURITY.md, docs/SETUP.md, etc.
 
 - [ ] Replace email addresses
 
   - Files: SECURITY.md (security contact)
-  - Replace: `security@example.com` → your email
+  -
 
 - [ ] Update repository URLs
 
   - Files: README.md, CONTRIBUTING.md, docs/ROADMAP.md
-  - Pattern: `https://github.com/yourusername/x-ray`
+  - Pattern: `https://github.com/abhijain1705/x-ray`
 
 - [ ] Update API examples URLs if needed
   - Files: docs/API.md, docs/SETUP.md
@@ -178,7 +174,7 @@ git tag -l
 
 ```bash
 # Add remote
-git remote add origin https://github.com/yourusername/x-ray.git
+git remote add origin https://github.com/abhijain1705/x-ray.git
 
 # Push main branch
 git push -u origin main
@@ -201,26 +197,12 @@ Verify on GitHub:
 
 ---
 
-## GitHub Pages (Optional)
-
-To host documentation on GitHub Pages:
-
-1. Go to Settings > Pages
-2. Source: `Deploy from a branch`
-3. Branch: `main`, folder: `docs`
-4. Wait for deployment
-5. Access at: `https://yourusername.github.io/x-ray`
-
-Alternative: Host on ReadTheDocs, Vercel, or Netlify
-
----
-
 ## npm Publishing (SDK Only)
 
 ### Preparation
 
 ```bash
-cd packages/xray-sdk
+cd sdk
 
 # Build
 npm run build
@@ -235,7 +217,7 @@ ls -lh @xray-sdk-*.tgz
 ### Update Before Publishing
 
 - [ ] Update version in `package.json`
-- [ ] Update `name` if needed (e.g., `@yourusername/xray-sdk`)
+- [ ] Update `name` if needed (e.g., `@abhi1705/xray-sdk`)
 - [ ] Add `repository` field to package.json
 - [ ] Add `homepage` field to package.json
 - [ ] Add `bugs` field to package.json

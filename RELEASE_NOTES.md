@@ -147,9 +147,8 @@ README.md                    ← Dashboard docs
 
 1. **Update URLs** in documentation
 
-   - Replace `yourusername` with your GitHub username
-   - Replace `security@example.com` with real email
-   - Update any example domains
+   - Replace `abhijain1705` with your GitHub username
+   - Replace `abhijain3002@gmail.com` with real email
 
 2. **Verify links**
 

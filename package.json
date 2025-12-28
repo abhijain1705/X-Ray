@@ -32,5 +32,8 @@
   },
   "bugs": {
     "url": "https://github.com/abhijain1705/x-ray/issues"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1"
   }
 }

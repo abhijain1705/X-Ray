@@ -1,7 +1,7 @@
 {
   "name": "@abhi1705/xray-sdk",
-  "version": "1.0.1",
-  "description": "X-Ray is a lightweight SDK + backend that records multi-step decision executions, persists them, and visualizes timelines in a dashboard. It's designed for systems where you need visibility into how decisions were made without incurring the overhead of event streaming or complex infrastructure.",
+  "version": "1.0.3",
+  "description": "X-Ray is a decision observability SDK for debugging multi-step, non-deterministic pipelines. It captures execution timelines, step-level inputs, outputs, and reasoning, and visualizes why a system made a specific decision.",
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,14 +11,20 @@
     "url": "git+https://github.com/abhijain1705/X-Ray.git"
   },
   "keywords": [
-    "x-ray",
-    "loggers",
-    "debugging",
-    "dashboard",
-    "sdk",
-    "steps",
-    "executions",
-    "pipeline"
+    "observability",
+    "decision-observability",
+    "execution-tracing",
+    "pipeline-debugging",
+    "workflow-debugging",
+    "decision-logging",
+    "ai-observability",
+    "llm-debugging",
+    "ranking-systems",
+    "rule-engine",
+    "multi-step",
+    "non-deterministic",
+    "developer-tools",
+    "backend-sdk"
   ],
   "author": "abhijain1705",
   "license": "ISC",

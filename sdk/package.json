@@ -1,6 +1,6 @@
 {
   "name": "@abhi1705/xray-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "X-Ray is a lightweight SDK + backend that records multi-step decision executions, persists them, and visualizes timelines in a dashboard. It's designed for systems where you need visibility into how decisions were made without incurring the overhead of event streaming or complex infrastructure.",
   "main": "src/index.ts",
   "scripts": {

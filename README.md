@@ -8,7 +8,7 @@ X-Ray is a lightweight SDK + backend that records multi-step decision executions
 
 X-Ray consists of three components:
 
-- **SDK** (`packages/xray-sdk`) — TypeScript library that instruments code and records decision steps
+- **SDK** (`sdk`) — TypeScript library that instruments code and records decision steps
 - **Backend** (`server`) — Node.js + Express service that ingests execution snapshots and persists to Supabase
 - **Dashboard** (`apps/dashboard`) — Next.js application for viewing executions and decision timelines
 

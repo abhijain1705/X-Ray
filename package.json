@@ -4,7 +4,7 @@
   "description": "Decision observability SDK + backend + dashboard",
   "private": true,
   "workspaces": [
-    "packages/xray-sdk",
+    "sdk",
     "server",
     "frontend"
   ],

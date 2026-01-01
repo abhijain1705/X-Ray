@@ -106,6 +106,19 @@ export default function ManageApps() {
           {copied === userId ? 'Copied' : 'Copy'}
         </button>
       </div>
+      {/* npm  */}
+      <div className='flex items-center gap-2'>
+        <code className='flex-1 truncate rounded-md bg-gray-100 px-3 py-2 text-sm'>
+          npm i @abhi1705/xray-sdk
+        </code>
+
+        <button
+          onClick={() => copyKey("npm i @abhi1705/xray-sdk")}
+          className='rounded-md border px-3 py-2 text-sm hover:bg-gray-100'
+        >
+          {copied === userId ? 'Copied' : 'Copy'}
+        </button>
+      </div>
 
       {/* Apps List */}
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>

@@ -451,7 +451,7 @@ class XRaySDK {
     async function flushExecutionData() {
       try {
         console.log("Flushing execution data:", execution);
-        await fetch(`http://localhost:4000/executions`, {
+        await fetch(`https://x-ray-rw4x.onrender.com/executions`, {
           method: "POST",
           headers: {
             "x-api-key": execution.apiKey,

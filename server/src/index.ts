@@ -41,49 +41,53 @@ async function authenticateSDK(
   next();
 }
 
-app.post("/executions", authenticateSDK, async (req: express.Request & { appRecord?: any }, res: express.Response) => {
-  const snapshot = req.body;
-  const appRecord = req.appRecord;
+app.post(
+  "/executions",
+  authenticateSDK,
+  async (req: express.Request & { appRecord?: any }, res: express.Response) => {
+    const snapshot = req.body;
+    const appRecord = req.appRecord;
 
-  try {
-    // 1. Insert execution
-    console.log("Inserting execution:", snapshot.executionId);
-    await supabase.from("executions").insert({
-      id: snapshot.executionId,
-      app_id: appRecord.id,
-      pipeline: snapshot.pipeline,
-      status: snapshot.status,
-      started_at: new Date(snapshot.timestamps.start),
-      ended_at: snapshot.timestamps.end
-        ? new Date(snapshot.timestamps.end)
-        : null,
-    });
+    try {
+      // 1. Insert execution
+      console.log("Inserting execution:", snapshot.executionId);
+      await supabase.from("executions").insert({
+        id: snapshot.executionId,
+        app_id: appRecord.id,
+        pipeline: snapshot.pipeline,
+        status: snapshot.status,
+        started_at: new Date(snapshot.timestamps.start),
+        ended_at: snapshot.timestamps.end
+          ? new Date(snapshot.timestamps.end)
+          : null,
+      });
 
-    // 2. Insert steps
-    console.log("Inserting steps...");
-    const steps = (snapshot.steps || []).map((step: any) => ({
-      execution_id: snapshot.executionId,
-      name: step.name,
-      timestamp: new Date(step.timestamp),
-      input: step.input,
-      output: step.output,
-      reasoning: step.reasoning,
-      metadata: step.metadata,
-    }));
+      // 2. Insert steps
+      console.log("Inserting steps...");
+      const steps = (snapshot.steps || []).map((step: any) => ({
+        execution_id: snapshot.executionId,
+        name: step.name,
+        timestamp: new Date(step.timestamp),
+        input: step.input,
+        output: step.output,
+        reasoning: step.reasoning,
+        metadata: step.metadata,
+      }));
 
-    if (steps.length > 0) {
-      await supabase.from("steps").insert(steps);
-      console.log(`Successfully inserted ${steps.length} steps`);
+      if (steps.length > 0) {
+        await supabase.from("steps").insert(steps);
+        console.log(`Successfully inserted ${steps.length} steps`);
+      }
+
+      console.log("Execution completed successfully");
+      res.json({ success: true });
+    } catch (err) {
+      // DO NOT throw — ingestion must be best-effort
+      console.error("Error inserting execution:", err);
+      res.json({ success: false });
     }
-
-    console.log("Execution completed successfully");
-    res.json({ success: true });
-  } catch (err) {
-    // DO NOT throw — ingestion must be best-effort
-    console.error("Error inserting execution:", err);
-    res.json({ success: false });
   }
-});
+);
 
 app.post("/auth/sync-user", async (req, res) => {
   const { clerkUserId, email } = req.body;
@@ -149,7 +153,7 @@ app.post("/apps", async (req, res) => {
   res.json(data);
 });
 
-app.get("/", (res: express.Response) => {
+app.get("/", (req: express.Request, res: express.Response) => {
   res.send("Welcome to my server!");
 });
 

@@ -17,132 +17,142 @@ app.use(bodyParser.json());
 
 // auth middleware
 async function authenticateSDK(
-    req: express.Request & { appRecord?: any },
-    res: express.Response,
-    next: express.NextFunction
+  req: express.Request & { appRecord?: any },
+  res: express.Response,
+  next: express.NextFunction
 ) {
-    const apiKey = req.headers["x-api-key"];
+  const apiKey = req.headers["x-api-key"];
 
-    if (!apiKey) {
-        return res.status(401).json({ error: "Missing API key" });
-    }
+  if (!apiKey) {
+    return res.status(401).json({ error: "Missing API key" });
+  }
 
-    const { data: appRecord } = await supabase
-        .from("apps")
-        .select("*")
-        .eq("api_key", apiKey)
-        .single();
+  const { data: appRecord } = await supabase
+    .from("apps")
+    .select("*")
+    .eq("api_key", apiKey)
+    .single();
 
-    if (!appRecord) {
-        return res.status(401).json({ error: "Invalid API key" });
-    }
+  if (!appRecord) {
+    return res.status(401).json({ error: "Invalid API key" });
+  }
 
-    req.appRecord = appRecord;
-    next();
+  req.appRecord = appRecord;
+  next();
 }
 
 app.post("/executions", authenticateSDK, async (req: express.Request & { appRecord?: any }, res: express.Response) => {
-    const snapshot = req.body;
-    const appRecord = req.appRecord;
+  const snapshot = req.body;
+  const appRecord = req.appRecord;
 
-    try {
-        // 1. Insert execution
-        await supabase.from("executions").insert({
-            id: snapshot.executionId,
-            app_id: appRecord.id,
-            pipeline: snapshot.pipeline,
-            status: snapshot.status,
-            started_at: new Date(snapshot.timestamps.start),
-            ended_at: snapshot.timestamps.end
-                ? new Date(snapshot.timestamps.end)
-                : null,
-        });
+  try {
+    // 1. Insert execution
+    console.log("Inserting execution:", snapshot.executionId);
+    await supabase.from("executions").insert({
+      id: snapshot.executionId,
+      app_id: appRecord.id,
+      pipeline: snapshot.pipeline,
+      status: snapshot.status,
+      started_at: new Date(snapshot.timestamps.start),
+      ended_at: snapshot.timestamps.end
+        ? new Date(snapshot.timestamps.end)
+        : null,
+    });
 
-        // 2. Insert steps
-        const steps = (snapshot.steps || []).map((step: any) => ({
-            execution_id: snapshot.executionId,
-            name: step.name,
-            timestamp: new Date(step.timestamp),
-            input: step.input,
-            output: step.output,
-            reasoning: step.reasoning,
-            metadata: step.metadata,
-        }));
+    // 2. Insert steps
+    console.log("Inserting steps...");
+    const steps = (snapshot.steps || []).map((step: any) => ({
+      execution_id: snapshot.executionId,
+      name: step.name,
+      timestamp: new Date(step.timestamp),
+      input: step.input,
+      output: step.output,
+      reasoning: step.reasoning,
+      metadata: step.metadata,
+    }));
 
-        if (steps.length > 0) {
-            await supabase.from("steps").insert(steps);
-        }
-
-        res.json({ success: true });
-    } catch (err) {
-        // DO NOT throw — ingestion must be best-effort
-        res.json({ success: false });
+    if (steps.length > 0) {
+      await supabase.from("steps").insert(steps);
+      console.log(`Successfully inserted ${steps.length} steps`);
     }
+
+    console.log("Execution completed successfully");
+    res.json({ success: true });
+  } catch (err) {
+    // DO NOT throw — ingestion must be best-effort
+    console.error("Error inserting execution:", err);
+    res.json({ success: false });
+  }
 });
 
 app.post("/auth/sync-user", async (req, res) => {
-    const { clerkUserId, email } = req.body;
+  const { clerkUserId, email } = req.body;
 
-    if (!clerkUserId) {
-        return res.status(400).json({ error: "Missing clerkUserId" });
-    }
+  if (!clerkUserId) {
+    return res.status(400).json({ error: "Missing clerkUserId" });
+  }
 
-    const { data: existingUser } = await supabase
-        .from("users")
-        .select("*")
-        .eq("clerk_user_id", clerkUserId)
-        .single();
+  const { data: existingUser } = await supabase
+    .from("users")
+    .select("*")
+    .eq("clerk_user_id", clerkUserId)
+    .single();
 
-    if (existingUser) {
-        return res.json(existingUser);
-    }
+  if (existingUser) {
+    console.log("User already exists:", clerkUserId);
+    return res.json(existingUser);
+  }
 
-    const { data, error } = await supabase
-        .from("users")
-        .insert({
-            clerk_user_id: clerkUserId,
-            email,
-        })
-        .select()
-        .single();
+  const { data, error } = await supabase
+    .from("users")
+    .insert({
+      clerk_user_id: clerkUserId,
+      email,
+    })
+    .select()
+    .single();
 
-    if (error) {
-        return res.status(500).json({ error: error.message });
-    }
+  if (error) {
+    console.error("Error syncing user:", error);
+    return res.status(500).json({ error: error.message });
+  }
 
-    res.json(data);
+  console.log("User synced successfully:", clerkUserId);
+  res.json(data);
 });
 
 app.post("/apps", async (req, res) => {
-    const { userId, name } = req.body;
+  const { userId, name } = req.body;
 
-    if (!userId || !name) {
-        return res.status(400).json({ error: "Missing fields" });
-    }
+  if (!userId || !name) {
+    return res.status(400).json({ error: "Missing fields" });
+  }
 
-    const apiKey = `xr_${crypto.randomUUID()}`;
+  const apiKey = `xr_${crypto.randomUUID()}`;
 
-    const { data, error } = await supabase
-        .from("apps")
-        .insert({
-            user_id: userId,
-            name,
-            api_key: apiKey,
-        })
-        .select()
-        .single();
+  const { data, error } = await supabase
+    .from("apps")
+    .insert({
+      user_id: userId,
+      name,
+      api_key: apiKey,
+    })
+    .select()
+    .single();
 
-    if (error) {
-        return res.status(500).json({ error: error.message });
-    }
+  if (error) {
+    console.error("Error creating app:", error);
+    return res.status(500).json({ error: error.message });
+  }
 
-    res.json(data);
+  console.log("App created successfully:", name);
+  res.json(data);
 });
 
-app.get("/", (req: express.Request, res: express.Response) => {
-    res.send("Welcome to my server!");
+app.get("/", (res: express.Response) => {
+  res.send("Welcome to my server!");
 });
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });

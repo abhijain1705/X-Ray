@@ -1,9 +1,38 @@
-import { ExecutionOptions, StaticConfig, StepInput } from "./types";
-import { safeJson } from "./util";
 import dotenv from "dotenv";
 
 dotenv.config();
 
+export type StaticConfig = {
+  apiKey: string;
+  appId: string;
+  pipeline: string;
+  environment?: "dev" | "prod";
+};
+
+export type ExecutionOptions = StaticConfig & {
+  executionId: string;
+  steps: StepInput[];
+  status: "pending" | "in_progress" | "completed" | "failed";
+  timestamps: { start: number; end?: number };
+};
+
+export type StepInput = {
+  name: string;
+  timestamp?: number;
+  status?: "pending" | "in_progress" | "completed" | "failed";
+  input?: unknown;
+  output?: unknown;
+  reasoning?: string;
+  metadata?: Record<string, any>;
+};
+
+export function safeJson(data: unknown) {
+  try {
+    return JSON.parse(JSON.stringify(data));
+  } catch {
+    return "[unserializable]";
+  }
+}
 class XRaySDK {
   private config: StaticConfig;
 
@@ -26,6 +55,7 @@ class XRaySDK {
 
   startExecution() {
     const executionId = crypto.randomUUID();
+    console.log("Starting execution:", executionId);
 
     const execution: ExecutionOptions = {
       ...this.config,
@@ -37,22 +67,29 @@ class XRaySDK {
 
     async function flushExecutionData() {
       try {
-        await fetch(`${process.env.SERVER_API}/executions`, {
+        console.log("Flushing execution data:", execution);
+        await fetch(`https://x-ray-rw4x.onrender.com/executions`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(safeJson(execution)),
         });
+        console.log("Execution data flushed successfully");
       } catch (error) {
-        // swallow
+        console.error("Error flushing execution data:", error);
       }
     }
 
     const recordStep = (step: StepInput) => {
       try {
-        if (!step?.name) return;
+        console.log("Recording step:", step);
+        if (!step?.name) {
+          console.warn("Step name is missing");
+          return;
+        }
         if (execution.status === "completed" || execution.status === "failed") {
+          console.warn("Execution already completed or failed, skipping step");
           return;
         }
 
@@ -63,38 +100,44 @@ class XRaySDK {
         });
 
         execution.status = "in_progress";
-      } catch {
-        // swallow
+        console.log("Step recorded, execution status:", execution.status);
+      } catch (error) {
+        console.error("Error recording step:", error);
       }
     };
 
     const completeExecution = () => {
       try {
+        console.log("Completing execution:", executionId);
         if (execution.status === "completed" || execution.status === "failed") {
+          console.warn("Execution already in final state");
           return;
         }
         execution.status = "completed";
         execution.timestamps.end = Date.now();
         flushExecutionData();
-      } catch {
-        // swallow
+      } catch (error) {
+        console.error("Error completing execution:", error);
       }
     };
 
     const failExecution = () => {
       try {
+        console.log("Failing execution:", executionId);
         if (execution.status === "completed" || execution.status === "failed") {
+          console.warn("Execution already in final state");
           return;
         }
         execution.status = "failed";
         execution.timestamps.end = Date.now();
         flushExecutionData();
-      } catch {
-        // swallow
+      } catch (error) {
+        console.error("Error failing execution:", error);
       }
     };
 
     const getSnapshot = () => {
+      console.log("Getting execution snapshot");
       return safeJson(execution);
     };
 

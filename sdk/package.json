@@ -1,9 +1,15 @@
 {
   "name": "@abhi1705/xray-sdk",
-  "version": "1.0.3",
+  "version": "1.0.8",
   "description": "X-Ray is a decision observability SDK for debugging multi-step, non-deterministic pipelines. It captures execution timelines, step-level inputs, outputs, and reasoning, and visualizes why a system made a specific decision.",
-  "main": "src/index.ts",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

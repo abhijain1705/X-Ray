@@ -4,8 +4,8 @@ import XRaySDK from "@abhi1705/xray-sdk";
 
 export function runLoanApproval() {
   const xray = new XRaySDK({
-    apiKey: "dummy-api-key",
-    appId: "dummy-pipeline",
+    apiKey: "user_37R2mTBdr2jy1h6MBJCiSBMk8dL",
+    appId: "xr_bb34cafb-2a71-44c0-a541-fdae5922fca7",
     pipeline: "loan-approval",
     environment: "dev",
   });
@@ -13,11 +13,14 @@ export function runLoanApproval() {
   const execution = xray.startExecution();
 
   try {
+    console.log("Starting loan approval process...");
+
     execution.recordStep({
       name: "load_applicant",
       input: applicant,
       reasoning: "Using applicant profile as input",
     });
+    console.log("Applicant loaded:", applicant);
 
     const riskScore = calculateRiskScore(applicant);
 
@@ -27,6 +30,7 @@ export function runLoanApproval() {
       output: riskScore,
       reasoning: "Applied risk scoring rules",
     });
+    console.log("Risk score calculated:", riskScore);
 
     const decision = riskScore > 60 ? "REJECTED" : "APPROVED";
 
@@ -36,8 +40,10 @@ export function runLoanApproval() {
       output: decision,
       reasoning: "Threshold check (score > 60)",
     });
+    console.log("Final decision:", decision);
 
     execution.completeExecution();
+    console.log("Execution completed successfully");
 
     return {
       applicant,
@@ -45,6 +51,7 @@ export function runLoanApproval() {
       decision,
     };
   } catch (err) {
+    console.error("Error during execution:", err);
     execution.failExecution();
     throw err;
   }

@@ -71,6 +71,7 @@ class XRaySDK {
         await fetch(`https://x-ray-rw4x.onrender.com/executions`, {
           method: "POST",
           headers: {
+            "x-api-key": execution.apiKey,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(safeJson(execution)),

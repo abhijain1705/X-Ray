@@ -57,6 +57,7 @@ export default function SignUpViewPage() {
       <div className='flex h-full items-center justify-center p-4 lg:p-8'>
         <div className='flex w-full max-w-md flex-col items-center justify-center space-y-6'>
           <ClerkSignUpForm
+            forceRedirectUrl='/'
             initialValues={{
               emailAddress: 'your_mail@example.com'
             }}
